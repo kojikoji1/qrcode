@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>スレッド掲示板</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .container { max-height: 600px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }
+        .comment { margin-left: 20px; border-left: 2px solid #ddd; padding-left: 10px; margin-top: 10px; }
+        .timestamp { color: gray; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>お題：マイナンバーカードに対するあなたの考えを教えてください</h1>
+
+    <h2>① 新しいスレッドを投稿</h2>
+    <form method="post">
+        名前: <input type="text" name="name"><br>
+        コメント: <br>
+        <textarea name="text" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="投稿">
+    </form>
+
+    <h2>② 投稿されたコメント一覧</h2>
+    <div class="container">
+        {% for c in comments if not c.parent_id %}
+            <div class="comment">
+                <div class="timestamp">{{ c.timestamp }} - <strong>{{ c.name }}</strong></div>
+                <div>{{ c.text }}</div>
+                <!-- 返信フォーム -->
+                <form method="post">
+                    <input type="hidden" name="parent_id" value="{{ c.id }}">
+                    名前: <input type="text" name="name"><br>
+                    返信: <br>
+                    <textarea name="text" rows="2" cols="50"></textarea><br>
+                    <input type="submit" value="返信">
+                </form>
+
+                {% for r in comments if r.parent_id == c.id %}
+                    <div class="comment">
+                        <div class="timestamp">{{ r.timestamp }} - <strong>{{ r.name }}</strong></div>
+                        <div>{{ r.text }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
