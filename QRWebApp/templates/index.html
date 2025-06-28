@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>QRコード生成（Web版）</title>
+</head>
+<body>
+    <h2>QRコードを作成する</h2>
+    <form method="POST">
+        <input type="text" name="text" placeholder="ここにテキストを入力" required>
+        <input type="submit" value="QRコード生成">
+    </form>
+
+    {% if qr_created %}
+        <h3>生成されたQRコード：</h3>
+        <img src="{{ url_for('qr_image') }}" alt="QRコード">
+    {% endif %}
+</body>
+</html>
